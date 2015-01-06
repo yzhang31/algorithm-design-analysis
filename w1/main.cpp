@@ -9,7 +9,7 @@
 using namespace std;
 
 static int recursive_count = 0;
-static long inversion_count = 0;
+static unsigned long inversion_count = 0;
 
 vector<int> read_int_array_from_file(const std::string& file_name)
 {
@@ -57,17 +57,17 @@ void merge_sorted_array(vector<int>& dest, vector<int>& left, vector<int>& right
 {
     assert(dest.size() == left.size() + right.size());
     size_t length = dest.size();
-    int i = 0, j = 0;
-    for (int k = 0; k < length; ++k) {
+    size_t i = 0, j = 0;
+    for (size_t k = 0; k < length; ++k) {
         if( i < left.size() && j >= right.size())
         {
             dest[k] = left[i];
-            i ++;
+            i++;
         }
         else if( j < right.size() && i >= left.size())
         {
             dest[k] = right[j];
-            j ++;
+            j++;
         }
         else if (left[i] < right[j]) {
             dest[k] = left[i];
@@ -76,7 +76,7 @@ void merge_sorted_array(vector<int>& dest, vector<int>& left, vector<int>& right
         else
         {
             dest[k] = right[j];
-            inversion_count += (left.size() - i);
+            inversion_count += (long)(left.size() - i);
             j++;
         }
 
@@ -112,14 +112,14 @@ void merge_sort(vector<int>& input)
 int main()
 {
     vector<int> numbers = read_int_array_from_file("IntegerArray.txt");
-    
+
     cout << "Input random order integer array size:" << numbers.size() << endl;
-    
+
     merge_sort(numbers);
-    
+
     cout << "Array has been sorted: " << is_sorted_array(numbers) << endl;
-    cout << "Inversion count:" << inversion_count << endl;
     cout << "Recursive Call count:" << recursive_count << endl;
+    cout << "Inversion count:" << inversion_count << endl;
 
     return 0;
 }
