@@ -4,69 +4,123 @@
 #include <array>
 #include <string>
 #include <cstdlib>
+#include <cassert>
 
 using namespace std;
 
+static int recursive_count = 0;
+static long inversion_count = 0;
+
 vector<int> read_int_array_from_file(const std::string& file_name)
 {
+    std::vector<int> values;
     std::ifstream fs(file_name);
 
     if (fs.is_open())
-        cout << "Open file successfully" << endl;
+    {
+        cout << "Open file successfully!" << endl;
+    }
     else
-        cout << "Failed to open file" << file_name << endl;
-        
-    std::vector<int> values;
+    {
+        cout << "Failed to open file!" << file_name << endl;
+        return values;
+    }
+
     for (array<char,7>a; fs.getline(&a[0], 7);)
     {
         values.push_back(atoi(&a[0]));
     }
 
-    cout << "Array size:" << values.size() << endl;
-
     fs.close();
     return values;
 }
 
-void split_vector(vector<int>& source, vector<int>& left, vector<int>& right)
+void split_array(vector<int>& source, vector<int>& left, vector<int>& right)
 {
         size_t array_size = source.size();
-        size_t left_array_size = array_size / 2;
-        size_t right_array_size = array_size - left_array_size;
 
-        vector<int> left_array;
-        left_array.resize(left_array_size);
+        left.resize(array_size / 2);
 
-        vector<int> right_array;
-        right_array.resize(right_array_size);
-
-        for(size_t i = 0; i < left_array_size; i++)
+        for(size_t i = 0; i < left.size(); i++)
         {
-            left_array[i] = source[i];
+            left[i] = source[i];
         }
 
-        for(size_t i = 0; i < right_array_size; i++)
+        right.resize(array_size - left.size());
+        for(size_t i = 0; i < right.size(); i++)
         {
-            right_array[i] = source[left_array_size + i];
+            right[i] = source[left.size() + i];
         }
 }
 
-long merge_sort(vector<int>& input_array)
+void merge_sorted_array(vector<int>& dest, vector<int>& left, vector<int>& right)
 {
-    size_t array_size = input_array.size();
-    if (array_size > 1)
+    assert(dest.size() == left.size() + right.size());
+    size_t length = dest.size();
+    int i = 0, j = 0;
+    for (int k = 0; k < length; ++k) {
+        if( i < left.size() && j >= right.size())
+        {
+            dest[k] = left[i];
+            i ++;
+        }
+        else if( j < right.size() && i >= left.size())
+        {
+            dest[k] = right[j];
+            j ++;
+        }
+        else if (left[i] < right[j]) {
+            dest[k] = left[i];
+            i++;
+        }
+        else
+        {
+            dest[k] = right[j];
+            inversion_count += (left.size() - i);
+            j++;
+        }
+
+    }
+}
+
+bool is_sorted_array(vector<int> & array)
+{
+    for (size_t i = 0; i < array.size() - 1 ; ++i)
+    {
+        if (array[i] > array[i + 1])
+        {
+            return false;
+        }
+    }
+    return true;
+}
+
+
+void merge_sort(vector<int>& input)
+{
+    recursive_count++;
+    if (!is_sorted_array(input))
     {
         vector<int> left, right;
-        split_vector(input_array, left, right );
+        split_array(input, left, right );
         merge_sort(left);
         merge_sort(right);
+        merge_sorted_array(input, left, right);
     }
-    return 0L;
 }
 
 int main()
 {
-    read_int_array_from_file("IntegerArray.txt");
+    vector<int> numbers = read_int_array_from_file("IntegerArray.txt");
+    
+    cout << "Input random order integer array size:" << numbers.size() << endl;
+    
+    merge_sort(numbers);
+    
+    cout << "Array has been sorted: " << is_sorted_array(numbers) << endl;
+    cout << "Inversion count:" << inversion_count << endl;
+    cout << "Recursive Call count:" << recursive_count << endl;
+
     return 0;
 }
 
