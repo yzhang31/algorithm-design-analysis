@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>C406B0EF-B403-4389-800C-3454808244AD</string>
+	<key>IDESourceControlProjectName</key>
+	<string>w1</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>120B26231CD0CE9C194471ABCEAD5DDC3C059C74</key>
+		<string>https://Yanhua.dev@code.google.com/p/yanhua-algorithm-design-analysis/</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>w1/w1.xcodeproj</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>120B26231CD0CE9C194471ABCEAD5DDC3C059C74</key>
+		<string>../../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://Yanhua.dev@code.google.com/p/yanhua-algorithm-design-analysis/</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>111</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>120B26231CD0CE9C194471ABCEAD5DDC3C059C74</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>120B26231CD0CE9C194471ABCEAD5DDC3C059C74</string>
+			<key>IDESourceControlWCCName</key>
+			<string>yanhua-algorithm-design-analysis</string>
+		</dict>
+	</array>
+</dict>
+</plist>

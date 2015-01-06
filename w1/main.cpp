@@ -12,8 +12,10 @@ vector<int> read_int_array_from_file(const std::string& file_name)
     std::ifstream fs(file_name);
 
     if (fs.is_open())
-        cout<<"Open file successfully" << endl;
-
+        cout << "Open file successfully" << endl;
+    else
+        cout << "Failed to open file" << file_name << endl;
+        
     std::vector<int> values;
     for (array<char,7>a; fs.getline(&a[0], 7);)
     {
@@ -51,7 +53,7 @@ void split_vector(vector<int>& source, vector<int>& left, vector<int>& right)
 
 long merge_sort(vector<int>& input_array)
 {
-    int array_size = input_array.size();
+    size_t array_size = input_array.size();
     if (array_size > 1)
     {
         vector<int> left, right;
