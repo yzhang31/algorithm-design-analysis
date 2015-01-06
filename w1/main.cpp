@@ -35,9 +35,12 @@ vector<int> read_int_array_from_file(const std::string& file_name)
     return values;
 }
 
-void split_array(vector<int>& source, vector<int>& left, vector<int>& right)
+bool split_array(vector<int>& source, vector<int>& left, vector<int>& right)
 {
         size_t array_size = source.size();
+
+        if(array_size <= 1)
+            return false;
 
         left.resize(array_size / 2);
 
@@ -51,6 +54,7 @@ void split_array(vector<int>& source, vector<int>& left, vector<int>& right)
         {
             right[i] = source[left.size() + i];
         }
+        return true;
 }
 
 void merge_sorted_array(vector<int>& dest, vector<int>& left, vector<int>& right)
@@ -96,26 +100,56 @@ bool is_sorted_array(vector<int> & array)
 }
 
 
-void merge_sort(vector<int>& input)
+void merge_sort_v1(vector<int>& input)
 {
     recursive_count++;
     if (!is_sorted_array(input))
     {
         vector<int> left, right;
         split_array(input, left, right );
-        merge_sort(left);
-        merge_sort(right);
+        merge_sort_v1(left);
+        merge_sort_v1(right);
         merge_sorted_array(input, left, right);
+    }
+}
+
+void merge_sort_v2(vector<int>& input)
+{
+    recursive_count++;
+    vector<int> left, right;
+    if (split_array(input, left, right ))
+    {
+        merge_sort_v2(left);
+        merge_sort_v2(right);
+        merge_sorted_array(input, left, right);
+    }
+}
+
+void bubble_sort(vector<int>& input)
+{
+    for(size_t i = 0; i < input.size()- 1; i++)
+    {
+        for (size_t j = i + 1; j < input.size(); j++)
+        {
+            if (input[i] >  input[j])
+            {
+                int temp = input[i];
+                input[i] = input[j];
+                input [j] = temp;
+            }
+        }
     }
 }
 
 int main()
 {
-    vector<int> numbers = read_int_array_from_file("IntegerArray.txt");
+    vector<int> numbers = read_int_array_from_file("IntegerArray.txt");  // cost 0.1s
 
     cout << "Input random order integer array size:" << numbers.size() << endl;
 
-    merge_sort(numbers);
+    //bubble_sort(numbers);   // 124 s
+    merge_sort_v1(numbers);     // 0.78 s 154893 recursive call.
+    //merge_sort_v2(numbers);   // 1.0 s, 199999 recursive call.
 
     cout << "Array has been sorted: " << is_sorted_array(numbers) << endl;
     cout << "Recursive Call count:" << recursive_count << endl;
