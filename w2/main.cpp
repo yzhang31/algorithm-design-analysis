@@ -8,6 +8,7 @@
 #include <algorithm>
 #include <functional>
 #include <iterator>
+#include <random>
 
 using namespace std;
 
@@ -51,8 +52,6 @@ bool is_sorted_array(vector<int> & array)
 
 typedef vector<int>::iterator ArrayIter;
 
-static unsigned int comparison_number = 0;
-
 ArrayIter partition(ArrayIter begin, ArrayIter end)
 {
     ArrayIter pivot = begin;
@@ -69,26 +68,26 @@ ArrayIter partition(ArrayIter begin, ArrayIter end)
     return i - 1;
 }
 
-ArrayIter partition_use_first(ArrayIter begin, ArrayIter end)
+ArrayIter pivot_with_first(ArrayIter begin, ArrayIter end)
 {
-    if (end - begin == 1)
-        return begin;
-
-    return partition( begin,  end);
+    return begin;
 }
 
-ArrayIter partition_use_last(ArrayIter begin, ArrayIter end)
+ArrayIter pivot_with_last(ArrayIter begin, ArrayIter end)
 {
-    if (end - begin == 1)
-        return begin;
-
-    iter_swap(end - 1, begin);
-
-    return partition( begin,  end);
+    return end - 1;
 }
 
+ArrayIter pivot_with_random(ArrayIter begin, ArrayIter end)
+{
+    // In code::blocks 12.12 with GCC compiler, every time run,
+    // give save random number in same sequence. strange.
+    double random = (double)rand() / (double)RAND_MAX;
+    int pos = (int) ((end - begin) * random);
+    return begin + pos;
+}
 
-ArrayIter get_mean_in_three(ArrayIter begin, ArrayIter end)
+ArrayIter pivot_with_mean_in_three(ArrayIter begin, ArrayIter end)
 {
 
     int length = end - begin;
@@ -112,40 +111,49 @@ ArrayIter get_mean_in_three(ArrayIter begin, ArrayIter end)
         assert(false);
 }
 
-
-ArrayIter partition_use_mean_in_three(ArrayIter begin, ArrayIter end)
+int quicksort(ArrayIter begin, ArrayIter end,
+               ArrayIter(*select_pivot_func)(ArrayIter, ArrayIter))
 {
-    if (end - begin == 1)
-        return begin;
-
-    iter_swap(get_mean_in_three(begin, end), begin);
-
-    return partition( begin,  end);
-}
-
-void quicksort(ArrayIter begin, ArrayIter end)
-{
+    int comparison_number = 0;
     if (end - begin > 1)
     {
        comparison_number += end - begin - 1;
-       //ArrayIter pivotPos = partition_use_first(begin, end);
-       //ArrayIter pivotPos = partition_use_last(begin, end);
-       ArrayIter pivotPos = partition_use_mean_in_three(begin, end);
-       quicksort(begin, pivotPos);
-       quicksort(pivotPos + 1, end);
+       ArrayIter pivot = select_pivot_func(begin, end);
+       iter_swap(pivot, begin);
+       ArrayIter partition_positon = partition(begin,end);
+       comparison_number += quicksort(begin, partition_positon, select_pivot_func);
+       comparison_number += quicksort(partition_positon + 1, end, select_pivot_func);
     }
+    return comparison_number;
 }
-
-
 
 int main()
 {
-    vector<int> numbers = read_int_array_from_file("QuickSort.txt");
-    cout << "Input random order integer array size:" << numbers.size() << endl;
+    vector<int> origin_array = read_int_array_from_file("QuickSort.txt");
+    cout << "Input random order integer array size:" << origin_array.size() << endl;
 
-    quicksort(numbers.begin(), numbers.end());
+    vector<int> numbers;
+
+    numbers = origin_array;
+    int comparison_number_fisrt_pivot = quicksort(numbers.begin(), numbers.end(), &pivot_with_first);
+    assert(is_sorted_array(numbers));
+
+    numbers = origin_array;
+    int comparison_number_last_pivot = quicksort(numbers.begin(), numbers.end(), &pivot_with_last);
+    assert(is_sorted_array(numbers));
+
+    numbers = origin_array;
+    int comparison_number_mean_in_three_pivot = quicksort(numbers.begin(), numbers.end(), &pivot_with_mean_in_three);
+    assert(is_sorted_array(numbers));
+
+    numbers = origin_array;
+    int comparison_number_random = quicksort(numbers.begin(), numbers.end(), &pivot_with_random);
+    assert(is_sorted_array(numbers));
 
     cout << "Array has been sorted: " << is_sorted_array(numbers) << endl;
-    cout << "comparison count:" << comparison_number << endl;
+    cout << "Use first as pivot, comparison count:" << comparison_number_fisrt_pivot << endl;
+    cout << "Use last as pivot, comparison count:" << comparison_number_last_pivot << endl;
+    cout << "Use mean in three as pivot, comparison count:" << comparison_number_mean_in_three_pivot << endl;
+    cout << "Use random in three as pivot, comparison count:" << comparison_number_random << endl;
     return 0;
 }
