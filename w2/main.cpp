@@ -9,6 +9,7 @@
 #include <functional>
 #include <iterator>
 #include <random>
+#include <ctime>
 
 using namespace std;
 
@@ -80,8 +81,6 @@ ArrayIter pivot_with_last(ArrayIter begin, ArrayIter end)
 
 ArrayIter pivot_with_random(ArrayIter begin, ArrayIter end)
 {
-    // In code::blocks 12.12 with GCC compiler, every time run,
-    // give save random number in same sequence. strange.
     double random = (double)rand() / (double)RAND_MAX;
     int pos = (int) ((end - begin) * random);
     return begin + pos;
@@ -90,7 +89,7 @@ ArrayIter pivot_with_random(ArrayIter begin, ArrayIter end)
 ArrayIter pivot_with_mean_in_three(ArrayIter begin, ArrayIter end)
 {
 
-    int length = end - begin;
+    long length = end - begin;
     ArrayIter first = begin;
     ArrayIter last = end - 1;
     ArrayIter mean = length % 2 == 0 ? begin + length / 2 - 1 : begin + length / 2;
@@ -135,25 +134,33 @@ int main()
     vector<int> numbers;
 
     numbers = origin_array;
-    int comparison_number_fisrt_pivot = quicksort(numbers.begin(), numbers.end(), &pivot_with_first);
+    int comparison_number_fisrt_pivot =
+        quicksort(numbers.begin(), numbers.end(), &pivot_with_first);
     assert(is_sorted_array(numbers));
 
     numbers = origin_array;
-    int comparison_number_last_pivot = quicksort(numbers.begin(), numbers.end(), &pivot_with_last);
+    int comparison_number_last_pivot =
+        quicksort(numbers.begin(), numbers.end(), &pivot_with_last);
     assert(is_sorted_array(numbers));
 
     numbers = origin_array;
-    int comparison_number_mean_in_three_pivot = quicksort(numbers.begin(), numbers.end(), &pivot_with_mean_in_three);
+    int comparison_number_mean_in_three_pivot =
+        quicksort(numbers.begin(), numbers.end(), &pivot_with_mean_in_three);
     assert(is_sorted_array(numbers));
 
+    // Set a random see with system elapse time, in order that
+    // get different random number sequence every time.
+    srand((unsigned)time(0));
+    
     numbers = origin_array;
-    int comparison_number_random = quicksort(numbers.begin(), numbers.end(), &pivot_with_random);
+    int comparison_number_random =
+        quicksort(numbers.begin(), numbers.end(), &pivot_with_random);
     assert(is_sorted_array(numbers));
 
     cout << "Array has been sorted: " << is_sorted_array(numbers) << endl;
     cout << "Use first as pivot, comparison count:" << comparison_number_fisrt_pivot << endl;
     cout << "Use last as pivot, comparison count:" << comparison_number_last_pivot << endl;
     cout << "Use mean in three as pivot, comparison count:" << comparison_number_mean_in_three_pivot << endl;
-    cout << "Use random in three as pivot, comparison count:" << comparison_number_random << endl;
+    cout << "Use random as pivot, comparison count:" << comparison_number_random << endl;
     return 0;
 }
