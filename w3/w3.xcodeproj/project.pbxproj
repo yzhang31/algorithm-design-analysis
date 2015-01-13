@@ -7,24 +7,28 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		C2E325081A65726C00C22E62 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C2E325071A65726C00C22E62 /* main.cpp */; };
+		C2E3250F1A65729800C22E62 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C2E3250E1A65729800C22E62 /* main.cpp */; };
+		C2E325121A6577B800C22E62 /* kargerMinCut.txt in CopyFiles */ = {isa = PBXBuildFile; fileRef = C2E325101A6576C900C22E62 /* kargerMinCut.txt */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
 		C2E325021A65726C00C22E62 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = /usr/share/man/man1/;
-			dstSubfolderSpec = 0;
+			buildActionMask = 12;
+			dstPath = "";
+			dstSubfolderSpec = 16;
 			files = (
+				C2E325121A6577B800C22E62 /* kargerMinCut.txt in CopyFiles */,
 			);
-			runOnlyForDeploymentPostprocessing = 1;
+			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		C2E325041A65726C00C22E62 /* w3 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = w3; sourceTree = BUILT_PRODUCTS_DIR; };
-		C2E325071A65726C00C22E62 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		C2E3250E1A65729800C22E62 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		C2E325101A6576C900C22E62 /* kargerMinCut.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = kargerMinCut.txt; sourceTree = "<group>"; };
+		C2E325111A65775300C22E62 /* readme */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = readme; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -41,7 +45,9 @@
 		C2E324FB1A65726C00C22E62 = {
 			isa = PBXGroup;
 			children = (
-				C2E325061A65726C00C22E62 /* w3 */,
+				C2E325111A65775300C22E62 /* readme */,
+				C2E325101A6576C900C22E62 /* kargerMinCut.txt */,
+				C2E3250E1A65729800C22E62 /* main.cpp */,
 				C2E325051A65726C00C22E62 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -52,14 +58,6 @@
 				C2E325041A65726C00C22E62 /* w3 */,
 			);
 			name = Products;
-			sourceTree = "<group>";
-		};
-		C2E325061A65726C00C22E62 /* w3 */ = {
-			isa = PBXGroup;
-			children = (
-				C2E325071A65726C00C22E62 /* main.cpp */,
-			);
-			path = w3;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -118,7 +116,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C2E325081A65726C00C22E62 /* main.cpp in Sources */,
+				C2E3250F1A65729800C22E62 /* main.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
