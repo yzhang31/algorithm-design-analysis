@@ -5,3 +5,4 @@ w1/obj/
 *.o
 *.exe
 w3/verify_graph.txt
+w3/bin/Debug/verify_graph.txt
