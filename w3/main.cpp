@@ -11,6 +11,8 @@
 #include <fstream>
 #include <sstream>
 #include <vector>
+#include <stdexcept>
+#include <stdlib.h>
 
 using namespace std;
 
@@ -20,7 +22,7 @@ struct Vertex
 {
     Vertex(int label):label(label)
     {}
-    
+
     int label;
     list<Edge*> edges;
 };
@@ -41,7 +43,7 @@ class Graph
 public:
     list<Edge*> edges;
     list<Vertex*> vertices;
-    
+
     void AddVertex(int label)
     {
         if (FindVetex(label) == nullptr)
@@ -49,13 +51,9 @@ public:
             CreateVetex(label);
         }
     }
-    
+
     void AddEdge(int first, int second)
     {
-        
-        if (FindEdge(first, second) != nullptr)
-            return;
-        
 
         Vertex *f = FindVetex(first);
         if (f == nullptr) {
@@ -63,28 +61,35 @@ public:
             ss << "first:" << first << " vetex is not created.";
             throw std::invalid_argument(ss.str());
         }
-        
+
         Vertex *s = FindVetex(second);
         if (f == nullptr) {
             stringstream ss;
             ss << "second:" << second << " vetex is not created.";
             throw std::invalid_argument(ss.str());
         }
-        
-        Edge * edge = new Edge(f,s);
-        f->edges.push_back(edge);
-        s->edges.push_back(edge);
-        edges.push_back(edge);
 
+        Edge * edge = FindEdge(first, second);
+
+        if (edge == nullptr)
+        {
+            edge = new Edge(f,s);
+            f->edges.push_back(edge);
+            edges.push_back(edge);
+        }
+        else
+        {
+            f->edges.push_back(edge);
+        }
     }
-    
+
     ~Graph()
     {
         for (auto e: edges)
         {
             delete e;
         }
-        
+
         for (auto v : vertices) {
             delete  v;
         }
@@ -94,7 +99,7 @@ private:
     {
         Vertex *v = new Vertex(label);
         list<Vertex*>::iterator insertPos = vertices.begin();
-        
+
         for (auto itor = vertices.begin(); itor != vertices.end(); itor++) {
             if (v->label > (*itor)->label ) {
                 insertPos = itor;
@@ -103,7 +108,7 @@ private:
         vertices.insert(++insertPos, v);
         return v;
     }
-    
+
     Vertex* FindVetex(int label)
     {
         for(auto aVetex: vertices)
@@ -113,11 +118,11 @@ private:
         }
         return nullptr;
     }
-    
+
     Edge* FindEdge(int first, int second)
     {
         Vertex *f = FindVetex(first);
-        
+
         if (f != nullptr)
         {
             for (auto aEdge: f->edges)
@@ -129,7 +134,7 @@ private:
                 }
             }
         }
-        
+
         return nullptr;
     }
 };
@@ -137,9 +142,9 @@ private:
 Graph* load_graph_from_file(const string& file_name)
 {
     Graph *g = new Graph();
-    
+
     ifstream ifs(file_name, ios::in);
-    
+
     for (string line; std::getline(ifs,line);)
     {
         std::stringstream ss(line);
@@ -147,31 +152,53 @@ Graph* load_graph_from_file(const string& file_name)
         vector<int> numbers;
         while (std::getline(ss, item, '\t') && item != "\r")
         {
-            numbers.push_back(std::atoi(item.c_str()));
+            numbers.push_back(atoi(item.c_str()));
         }
-        
+
         g->AddVertex(numbers[0]);
-        
-        for (int i = 1; i < numbers.size(); i++)
+
+        for (size_t i = 1; i < numbers.size(); i++)
         {
             g->AddVertex(numbers[i]);
             g->AddEdge(numbers[0], numbers[i]);
         }
     }
-    
+
     return g;
 }
 
 void write_graph_to_file(Graph& g)
 {
-    
+    ofstream output("verify_graph.txt");
+    for(auto v : g.vertices)
+    {
+        output << v->label << "\t";
+
+        for(auto edge : v->edges)
+        {
+
+            if (edge->vertexes.first->label != v->label)
+            {
+                output << edge->vertexes.first->label << "\t";
+            }
+            else
+            {
+                output << edge->vertexes.second->label << "\t";
+            }
+
+        }
+        output << "\n";
+    }
+    output.close();
 }
 
 int main(int argc, const char * argv[])
 {
     Graph *g = load_graph_from_file("kargerMinCut.txt");
-    // insert code here...
-    std::cout << "Hello, World!\n";
+
+
+
+    write_graph_to_file(*g);
     delete g;
     return 0;
 }

@@ -3,3 +3,5 @@ w1/obj/
 *.layout
 *.depend
 *.o
+*.exe
+w3/verify_graph.txt
