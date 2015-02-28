@@ -6,3 +6,7 @@ w1/obj/
 *.exe
 w3/verify_graph.txt
 w3/bin/Debug/verify_graph.txt
+*.suo
+w3/Debug/
+*.sdf
+*.opensdf
